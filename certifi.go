@@ -5141,11 +5141,11 @@ KrcYPqcZ2Qt9sTdBQrC6YB3y/gkRsPCHe6ed
 
 // CACerts builds an X.509 certificate pool containing the Mozilla CA
 // Certificate bundle. Returns nil on error.
-func CACerts() (*x509.CertPool) {
-    pool := x509.NewCertPool()
-    ok := pool.AppendCertsFromPEM([]byte(pemcerts))
-    if !ok {
-        return nil
-    }
-    return pool
+func CACerts() *x509.CertPool {
+	pool := x509.NewCertPool()
+	ok := pool.AppendCertsFromPEM([]byte(pemcerts))
+	if !ok {
+		return nil
+	}
+	return pool
 }
