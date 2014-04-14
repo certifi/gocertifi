@@ -13,5 +13,5 @@ CA bundle is derived from Mozilla's canonical set.
 
 You can use the gocertifi package as follows:
 
-    import "github.com/Lukasa/gocertifi"
+    import "github.com/certifi/gocertifi"
     cert_pool := gocertifi.CACerts()
