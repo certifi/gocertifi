@@ -1,6 +1,9 @@
 package gocertifi
 
-import "crypto/x509"
+import (
+	"crypto/x509"
+	"errors"
+)
 
 const pemcerts string = `
 # This Source Code Form is subject to the terms of the Mozilla Public
@@ -5139,13 +5142,15 @@ KrcYPqcZ2Qt9sTdBQrC6YB3y/gkRsPCHe6ed
 -----END CERTIFICATE-----
 `
 
+var ErrParseFailed = errors.New("gocertifi: error when parsing certificates")
+
 // CACerts builds an X.509 certificate pool containing the Mozilla CA
 // Certificate bundle. Returns nil on error.
-func CACerts() *x509.CertPool {
+func CACerts() (*x509.CertPool, error) {
 	pool := x509.NewCertPool()
 	ok := pool.AppendCertsFromPEM([]byte(pemcerts))
 	if !ok {
-		return nil
+		return nil, ErrParseFailed
 	}
-	return pool
+	return pool, nil
 }
