@@ -15,7 +15,26 @@ You can use the `gocertifi` package as follows:
 
 ```go
 import "github.com/certifi/gocertifi"
+
 cert_pool, err := gocertifi.CACerts()
+```
+
+You can use the returned `*x509.CertPool` as part of an HTTP transport, for example:
+
+```go
+import (
+  "net/http"
+  "crypto/tls"
+)
+
+// Setup an HTTP client with a custom transport
+transport := &http.Transport{
+	TLSClientConfig: &tls.Config{RootCAs: cert_pool},
+}
+client := &http.Client{Transport: transport}
+
+// Make an HTTP request using our custom transport
+resp, err := client.Get("https://example.com")
 ```
 
 ## Detailed Documentation
