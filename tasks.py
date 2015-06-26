@@ -3,7 +3,7 @@ import requests
 
 @task
 def update():
-    r = requests.get('http://ci.kennethreitz.org/job/ca-bundle/lastSuccessfulBuild/artifact/cacerts.pem')
+    r = requests.get('https://mkcert.org/generate/')
     r.raise_for_status()
     certs = r.content
 
