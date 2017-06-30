@@ -5260,7 +5260,10 @@ var ErrParseFailed = errors.New("gocertifi: error when parsing certificates")
 // Certificate bundle. Returns nil on error along with an appropriate error
 // code.
 func CACerts() (*x509.CertPool, error) {
-	pool := x509.NewCertPool()
+	pool, err := x509.SystemCertPool()
+	if err != nil {
+		pool = x509.NewCertPool()
+	}
 	ok := pool.AppendCertsFromPEM([]byte(pemcerts))
 	if !ok {
 		return nil, ErrParseFailed
