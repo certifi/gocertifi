@@ -49,26 +49,18 @@ package gocertifi
 
 //go:generate go run gen.go
 
-import (
-	"crypto/x509"
-	"errors"
-)
+import "crypto/x509"
 
 const pemcerts string = ` + "`" + `
 {{ .Bundle }}
 ` + "`" + `
-
-var ErrParseFailed = errors.New("gocertifi: error when parsing certificates")
 
 // CACerts builds an X.509 certificate pool containing the Mozilla CA
 // Certificate bundle. Returns nil on error along with an appropriate error
 // code.
 func CACerts() (*x509.CertPool, error) {
 	pool := x509.NewCertPool()
-	ok := pool.AppendCertsFromPEM([]byte(pemcerts))
-	if !ok {
-		return nil, ErrParseFailed
-	}
+	pool.AppendCertsFromPEM([]byte(pemcerts))
 	return pool, nil
 }
 `))
