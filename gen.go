@@ -3,6 +3,7 @@
 package main
 
 import (
+	"crypto/x509"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -23,6 +24,11 @@ func main() {
 	defer resp.Body.Close()
 
 	bundle, err := ioutil.ReadAll(resp.Body)
+
+	pool := x509.NewCertPool()
+	if !pool.AppendCertsFromPEM(bundle) {
+		log.Fatalf("can't parse cerficiates from %s", url)
+	}
 
 	fp, err := os.Create("certifi.go")
 	if err != nil {
