@@ -4,7 +4,7 @@
 
 package gocertifi
 
-//go:generate go run gen.go
+//go:generate go run gen.go "https://mkcert.org/generate/"
 
 import "crypto/x509"
 
