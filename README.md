@@ -28,7 +28,22 @@ import (
 )
 
 // Setup an HTTP client with a custom transport
-transport := http.DefaultTransport.(*http.Transport).Clone()
+transport := &http.Transport{
+  Proxy: ProxyFromEnvironment,
+  DialContext: (&net.Dialer{
+    Timeout:   30 * time.Second,
+    KeepAlive: 30 * time.Second,
+    DualStack: true,
+  }).DialContext,
+  ForceAttemptHTTP2:     true,
+  MaxIdleConns:          100,
+  IdleConnTimeout:       90 * time.Second,
+  TLSHandshakeTimeout:   10 * time.Second,
+  ExpectContinueTimeout: 1 * time.Second,
+}
+// or, starting with go1.13 simply use:
+// transport := http.DefaultTransport.(*http.Transport).Clone()
+
 transport.TLSClientConfig = &tls.Config{RootCAs: certPool}
 client := &http.Client{Transport: transport}
 
