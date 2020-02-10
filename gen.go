@@ -66,9 +66,9 @@ const pemcerts string = ` + "`" + `
 {{ .Bundle }}
 ` + "`" + `
 
-// CACerts builds an X.509 certificate pool containing the Mozilla CA
-// Certificate bundle. Returns nil on error along with an appropriate error
-// code.
+// CACerts builds an X.509 certificate pool containing the
+// certificate bundle from {{ .URL }} fetch on {{ .Timestamp }}.
+// Returns nil on error along with an appropriate error code.
 func CACerts() (*x509.CertPool, error) {
 	pool := x509.NewCertPool()
 	pool.AppendCertsFromPEM([]byte(pemcerts))
