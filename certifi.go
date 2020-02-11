@@ -4,7 +4,7 @@
 
 package gocertifi
 
-//go:generate go run gen.go
+//go:generate go run gen.go "https://mkcert.org/generate/"
 
 import "crypto/x509"
 
@@ -4614,9 +4614,9 @@ n/PIjhs4ViFqUZPTkcpG2om3PVODLAgfi49T3f+sHw==
 
 `
 
-// CACerts builds an X.509 certificate pool containing the Mozilla CA
-// Certificate bundle. Returns nil on error along with an appropriate error
-// code.
+// CACerts builds an X.509 certificate pool containing the
+// certificate bundle from https://mkcert.org/generate/ fetch on 2020-01-04 07:23:04.465051 -0800 PST m=+1.057377978.
+// Returns nil on error along with an appropriate error code.
 func CACerts() (*x509.CertPool, error) {
 	pool := x509.NewCertPool()
 	pool.AppendCertsFromPEM([]byte(pemcerts))
