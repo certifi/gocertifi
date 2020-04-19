@@ -66,7 +66,7 @@ package gocertifi
 
 import "crypto/x509"
 
-const pemcerts string = ` + "`" + `
+const PEMCerts string = ` + "`" + `
 {{ .Bundle }}
 ` + "`" + `
 
@@ -75,7 +75,7 @@ const pemcerts string = ` + "`" + `
 // Returns nil on error along with an appropriate error code.
 func CACerts() (*x509.CertPool, error) {
 	pool := x509.NewCertPool()
-	pool.AppendCertsFromPEM([]byte(pemcerts))
+	pool.AppendCertsFromPEM([]byte(PEMCerts))
 	return pool, nil
 }
 `))
