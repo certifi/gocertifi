@@ -66,16 +66,22 @@ package gocertifi
 
 import "crypto/x509"
 
-const PEMCerts string = ` + "`" + `
+const pemcerts string = ` + "`" + `
 {{ .Bundle }}
 ` + "`" + `
 
 // CACerts builds an X.509 certificate pool containing the
-// certificate bundle from {{ .URL }} fetch on {{ .Timestamp }}.
+// certificate bundle from {{ .URL }} fetched on {{ .Timestamp }}.
 // Returns nil on error along with an appropriate error code.
 func CACerts() (*x509.CertPool, error) {
 	pool := x509.NewCertPool()
-	pool.AppendCertsFromPEM([]byte(PEMCerts))
+	pool.AppendCertsFromPEM([]byte(pemcerts))
 	return pool, nil
+}
+
+// CACertsAsPEM returns a string containing the PEM encoded
+// certificate bundle from {{ .URL }} fetched on {{ .Timestamp }}.
+func CACertsAsPEM() string {
+	return pemcerts
 }
 `))
