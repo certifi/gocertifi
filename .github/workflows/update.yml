@@ -1,0 +1,36 @@
+name: Update
+
+on:
+  schedule:
+  - cron: '0 * * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    name: Update bundle
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/setup-go@v2
+      if: github.repository == 'certifi/gocertifi'
+      with:
+        go-version: '1.16'
+
+    - uses: actions/checkout@v2
+      if: github.repository == 'certifi/gocertifi'
+      with:
+        ref: test-update
+
+    - name: Run go generate
+      if: github.repository == 'certifi/gocertifi'
+      run: go generate
+
+    - name: Commit files
+      if: github.repository == 'certifi/gocertifi'
+      run: |
+        tag=$(date +%Y.%m.%d)
+        git config --local user.email "actions@github.com"
+        git config --local user.name "GitHub Actions"
+        git add certifi.go
+        git commit -m "Update $tag"
+        git push
