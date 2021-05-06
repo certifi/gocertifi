@@ -4227,7 +4227,7 @@ DgQWBBQxCpCPtsad0kRLgLWi5h+xEk8blTAKBggqhkjOPQQDAwNoADBlAjEA31SQ
 
 // CACerts builds an X.509 certificate pool containing the
 // certificate bundle from https://mkcert.org/generate/ fetch on 2021-05-06 13:44:45.662815506 -0700 PDT m=+0.535904117.
-// Returns nil on error along with an appropriate error code.
+// Will never actually return an error.
 func CACerts() (*x509.CertPool, error) {
 	pool := x509.NewCertPool()
 	pool.AppendCertsFromPEM([]byte(pemcerts))
