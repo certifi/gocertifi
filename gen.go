@@ -8,13 +8,14 @@ package main
 
 import (
 	"crypto/x509"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
 	"strings"
 	"text/template"
 	"time"
+	"bufio"
+	"bytes"
 )
 
 func main() {
@@ -32,10 +33,23 @@ func main() {
 	}
 	defer resp.Body.Close()
 
-	bundle, err := ioutil.ReadAll(resp.Body)
+	var bundle bytes.Buffer
+
+	scanner := bufio.NewScanner(resp.Body)
+	for scanner.Scan() {
+		b := scanner.Bytes()
+		if len(b) == 0 || b[0] == '#' {
+			continue
+		}
+		bundle.Write(b)
+		bundle.WriteByte('\n')
+	}
+	if err := scanner.Err(); err != nil {
+		log.Fatal("failed to read response body fully", err)
+	}
 
 	pool := x509.NewCertPool()
-	if !pool.AppendCertsFromPEM(bundle) {
+	if !pool.AppendCertsFromPEM(bundle.Bytes()) {
 		log.Fatalf("can't parse cerficiates from %s", url)
 	}
 
@@ -52,7 +66,7 @@ func main() {
 	}{
 		Timestamp: time.Now(),
 		URL:       url,
-		Bundle:    string(bundle),
+		Bundle:    bundle.String(),
 	})
 }
 
