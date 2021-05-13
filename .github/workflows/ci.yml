@@ -1,0 +1,38 @@
+name: ci
+
+on:
+- push
+- pull_request
+
+jobs:
+  test:
+    name: tests
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        version:
+        - '1.16'
+        - '1.15'
+        - '1.14'
+        - '1.13'
+        - '1.12'
+
+    env:
+      GO11MODULE: 'on'
+
+    steps:
+    - uses: actions/setup-go@v2
+      with:
+        go-version: ${{ matrix.version }}
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Run tests
+      run: go test -v ./...
+
+    - uses: golangci/golangci-lint-action@v2
+      with:
+        version: v1.29
