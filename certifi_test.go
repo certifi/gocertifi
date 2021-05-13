@@ -12,3 +12,10 @@ func TestGetCerts(t *testing.T) {
 		t.Errorf("Failed to return the certificates.")
 	}
 }
+
+func TestGetCertsAsPEM(t *testing.T) {
+	pemcerts := CACertsAsPEM()
+	if len(pemcerts) == 0 {
+		t.Errorf("Failed to return the certificates as PEM.")
+	}
+}

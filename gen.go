@@ -96,4 +96,10 @@ func CACerts() (*x509.CertPool, error) {
 	pool.AppendCertsFromPEM([]byte(pemcerts))
 	return pool, nil
 }
+
+// CACertsAsPEM returns a string containing the PEM encoded
+// certificate bundle from {{ .URL }} fetched on {{ .Timestamp }}.
+func CACertsAsPEM() string {
+	return pemcerts
+}
 `))

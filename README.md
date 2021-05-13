@@ -67,3 +67,9 @@ func CACerts() (*x509.CertPool, error)
 CACerts builds an X.509 certificate pool containing the Mozilla CA Certificate
 bundle. This can't actually error and always returns successfully with `nil`
 as the error. This will be replaced in `v2` to only return the `CertPool`.
+
+```go
+func CACertsAsPEM() string
+```
+CACertsAsPEM returns a string containing the PEM encoded Mozilla CA Certificate
+bundle.
