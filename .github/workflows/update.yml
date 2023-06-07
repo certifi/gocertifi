@@ -2,9 +2,7 @@ name: Update
 
 on:
   schedule:
-  # Every Monday at 10am
-  - cron: '0 10 * * 1'
-  workflow_dispatch:
+    - cron: '*/5 * * * *'
 
 jobs:
   update:
@@ -12,26 +10,25 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/setup-go@v2
-      if: github.repository == 'certifi/gocertifi'
-      with:
-        go-version: '1.16'
+      - uses: actions/setup-go@v2
+        if: github.repository == 'certifi/gocertifi'
+        with:
+          go-version: '1.16'
 
-    - uses: actions/checkout@v2
-      if: github.repository == 'certifi/gocertifi'
-      with:
-        ref: test-update
+      - uses: actions/checkout@v2
+        if: github.repository == 'certifi/gocertifi'
 
-    - name: Run go generate
-      if: github.repository == 'certifi/gocertifi'
-      run: go generate
+      - name: Run go generate
+        if: github.repository == 'certifi/gocertifi'
+        run: go generate
 
-    - name: Commit files
-      if: github.repository == 'certifi/gocertifi'
-      run: |
-        tag=$(date +%Y.%m.%d)
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Actions"
-        git add certifi.go
-        git commit -m "Update $tag"
-        git push
+      - name: Get current date
+        if: github.repository == 'certifi/gocertifi'
+        id: date
+        run: echo "::set-output name=date::$(date +'%Y.%m.%d')"
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        if: github.repository == 'certifi/gocertifi'
+        with:
+          commit_message: "Update ${{ steps.date.outputs.date }}"
+          commit_author: "GitHub Actions <actions@github.com>"
