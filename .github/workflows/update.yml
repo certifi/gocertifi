@@ -31,4 +31,5 @@ jobs:
         if: github.repository == 'certifi/gocertifi'
         with:
           commit_message: "Update ${{ steps.date.outputs.date }}"
+          tagging_message: "${{ steps.date.outputs.date }}"
           commit_author: "GitHub Actions <actions@github.com>"
